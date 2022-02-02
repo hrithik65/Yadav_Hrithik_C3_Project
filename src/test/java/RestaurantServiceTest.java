@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RestaurantServiceTest {
     RestaurantService service = new RestaurantService();
     Restaurant restaurant;
+    List<Item> order = new ArrayList<Item>();
 
     @BeforeEach
     public void restaurantCreation(){
@@ -28,6 +29,22 @@ class RestaurantServiceTest {
         assertThrows(restaurantNotFoundException.class, () -> service.findRestaurantByName("New cafe"));
     }
     //<<<<<<<<<<<<<<<<<<<<SEARCHING>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //>>>>>>>>>>>>>>>>>>>>>>ORDER VALUE<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    @Test
+    public void adding_items_from_menu_should_increase_the_total_order_value() {
+        order = restaurant.getMenu();
+        assertEquals(388,service.totalOrderValue(order));
+    }
+    @Test
+    public void removing_items_from_menu_should_decrease_the_total_order_value() {
+        order = restaurant.getMenu();
+        int total = service.totalOrderValue(order);
+        int afterTotal = order.get(1).getPrice();
+        order.remove(1);
+        assertEquals(total-afterTotal,service.totalOrderValue(order));
+    }
+    //<<<<<<<<<<<<<<<<<<<<ORDER VALUE>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     //>>>>>>>>>>>>>>>>>>>>>>ADMIN: ADDING & REMOVING RESTAURANTS<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     @Test
